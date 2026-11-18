@@ -20,6 +20,4 @@ timestamp=$(date -u +%Y'-'%m'-'%d' '%H':'%M':'%S)
 
 insert_stmt="INSERT INTO host_info (hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, l2_cache, timestamp, total_mem) VALUES('$psql_host', $cpu_number, '$cpu_architecture', '$cpu_model', $cpu_mhz, '$l2_cache', '$timestamp', '$total_mem');"
 PGPASSWORD="$psql_password" psql -h "$psql_host" -U "$psql_user" -d "$db_name" -c "$insert_stmt"
-
-#echo "$lscpu_out"
-echo "$insert_stmt"
+exit $?
