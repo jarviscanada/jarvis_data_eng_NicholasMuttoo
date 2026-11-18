@@ -6,7 +6,7 @@ psql_port=$2
 db_name=$3
 psql_user=$4
 psql_password=$5
-
+hostname=$(hostname -f)
 #Script
 #Obtain data
 lscpu_out=$(lscpu)
@@ -18,6 +18,6 @@ l2_cache=$(echo "$lscpu_out" | egrep "L2 cache:" | awk '{print $3}' | xargs)
 total_mem=$(free -k | awk '/^Mem:/ {print $2}')
 timestamp=$(date -u +%Y'-'%m'-'%d' '%H':'%M':'%S)
 
-insert_stmt="INSERT INTO host_info (hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, l2_cache, timestamp, total_mem) VALUES('$psql_host', $cpu_number, '$cpu_architecture', '$cpu_model', $cpu_mhz, '$l2_cache', '$timestamp', '$total_mem');"
+insert_stmt="INSERT INTO host_info (hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, l2_cache, timestamp, total_mem) VALUES('$hostname', $cpu_number, '$cpu_architecture', '$cpu_model', $cpu_mhz, '$l2_cache', '$timestamp', '$total_mem');"
 PGPASSWORD="$psql_password" psql -h "$psql_host" -U "$psql_user" -d "$db_name" -c "$insert_stmt"
 exit $?
